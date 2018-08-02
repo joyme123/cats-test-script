@@ -1,0 +1,137 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>测试php的GET,POST,以及文件上传</title>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <style>
+      pre {
+        background-color: #eee;
+        padding: 20px;
+      }
+
+      .section {
+        width: 100%;
+        margin-top: 30px;
+      }
+
+      .title {
+        background-color: aqua;
+        font-size: 22px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="section">
+      <div class="title">GET 测试</div>
+      <form id="getform">
+        <label>get提交的key1</label>
+        <input name="get_key1" type="text" value="key1">
+        <br>
+
+        <label>get提交的value1</label>
+        <input name="get_value1" type="text" value="value1">
+        <br>
+
+        <label>get提交的key2</label>
+        <input name="get_key2" type="text" value="key2">
+        <br>
+
+        <label>get提交的value2</label>
+        <input name="get_value2" type="text" value="value2">
+        <br>
+
+
+        <button type="button" onclick="testGet()">提交</button>
+        <br>
+      </form>
+
+      <pre id="GETRES">
+
+      </pre>
+    </div>
+
+    <div class="section">
+        <div class="title">POST urlencode 测试</div>
+        <form id="getform">
+          <label>Post提交的key1</label>
+          <input name="post_rle_key1" type="text" value="key1">
+          <br>
+  
+          <label>Post提交的value1</label>
+          <input name="post_rle_value1" type="text" value="value1">
+          <br>
+  
+          <label>Post提交的key2</label>
+          <input name="post_rle_key2" type="text" value="key2">
+          <br>
+  
+          <label>Post提交的value2</label>
+          <input name="post_rle_value2" type="text" value="value2">
+          <br>
+  
+  
+          <button type="button" onclick="testPOSTUle()">提交</button>
+          <br>
+        </form>
+  
+        <pre id="POSTULERES">
+  
+        </pre>
+      </div>
+
+  </body>
+
+
+  <script>
+    function testGet() {
+      $("#GETRES").html("")
+
+      var key1 = $("input[name='get_key1']").val()
+      var value1 = $("input[name='get_value1']").val()
+      var key2 = $("input[name='get_key2']").val()
+      var value2 = $("input[name='get_value2']").val()
+
+      $.ajax({
+        method:'GET',
+        url:'http://mysite.com:8089/index.php?'+key1+'='+value1+'&'+key2+'='+value2,
+        success: function(res) {
+
+          var res = JSON.parse(res)
+
+          res = JSON.stringify(res, null, 2)
+          $("#GETRES").html(res)
+        }
+      })
+    }
+
+    function testPOSTUle() {
+
+      $("#POSTULERES").html("")
+
+      var key1 = $("input[name='post_rle_key1']").val()
+      var value1 = $("input[name='post_rle_value1']").val()
+      var key2 = $("input[name='post_rle_key2']").val()
+      var value2 = $("input[name='post_rle_value2']").val()
+
+      params = {}
+      params[key1] = value1
+      params[key2] = value2
+
+      $.ajax({
+        method:'POST',
+        url:'http://mysite.com:8089/index.php',
+        data:params,
+        success: function(res) {
+
+          var res = JSON.parse(res)
+
+          res = JSON.stringify(res, null, 2)
+          $("#POSTULERES").html(res)
+        }
+      })
+    }
+
+  </script>
+
+</html>
