@@ -116,6 +116,18 @@
     </div>
   </div>
 
+  <div class="section">
+    <div class="title">fastcgi 连接复用测试</div>
+
+    <div class="content">
+      请求1的代码会sleep5秒，请求2的代码会sleep1秒
+      <button type="button" onclick="testReuseFCGIConn()">点击测试</button>
+    </div>
+
+    <pre id="fcgiReq1"></pre>
+    <pre id="fcgiReq2"></pre>
+  </div>
+
 </body>
 
 
@@ -186,8 +198,8 @@
         var res = JSON.parse(res)
 
         $("#uploadfile1").html("")
-        $("#uploadfile1").append("<img src='"+res.FILE.file1.filepath+"'></img>")
-        $("#uploadfile1").append("<img src='"+res.FILE.file2.filepath+"'></img>")
+        $("#uploadfile1").append("<img src='" + res.FILE.file1.filepath + "'></img>")
+        $("#uploadfile1").append("<img src='" + res.FILE.file2.filepath + "'></img>")
 
         res = JSON.stringify(res, null, 2)
         $("#POSTMULRES").html(res)
@@ -195,6 +207,26 @@
     })
   }
 
+  function testReuseFCGIConn() {
+    $.ajax({
+      method: 'GET',
+      url: 'http://mysite.com:8089/php/sleep.php?time=5',
+      success: function (res) {
+        $("#fcgiReq1").html("请求1"+res)
+      }
+    })
+
+    setTimeout(function(){
+      $.ajax({
+      method: 'GET',
+      url: 'http://mysite.com:8089/php/sleep.php?time=1',
+      success: function (res) {
+        $("#fcgiReq2").html("请求2"+res)
+      }
+    })
+    },100)
+
+  }
 </script>
 
 </html>
